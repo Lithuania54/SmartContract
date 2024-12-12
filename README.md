@@ -70,8 +70,6 @@ Vartotojai gali pasirinkti tarp dviejų prenumeratos lygių:
 - **Basic**: Leidžia pasiekti pirmuosius tris komiksus.
 - **Premium**: Leidžia pasiekti visus komiksus.
 
-Prenumerata galioja 30 dienų ir ją galima atnaujinti.
-
 ### 2. **Komiksų Pirkimas**
 Vartotojai gali įsigyti komiksus, jei jie nėra įtraukti į jų prenumeratą. Komiksai parduodami už Ethereum kriptovaliutą (ETH).
 
