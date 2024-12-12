@@ -52,3 +52,5 @@
 > [!NOTE]  
 > Ši logika buvo įgyvendinta `PirminisVariantas` folderyje.
 
+![Alt text](./public/lokalus_tinklas.gif)
+
