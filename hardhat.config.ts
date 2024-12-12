@@ -13,6 +13,7 @@ const config: HardhatUserConfig = {
         "0xa2320beeb142757280e413526f291b990af57d73cc03bb8396938953c4bf7c10", // Replace with accounts from Ganache
         "0x230cdc3917a3ceeec8520411a116964f8344510bc27937ece0ed6260d8deb008",
         "0x64634f225ad0a4b4ad131f0a19dcf65d039e50193a67538510852eb7c65a4c27",
+        "0x958a5ffcdcd38c6f1c6a1b75758e5b63ec1a2036d1512bb942bb22e0f9b39930",
       ],
     },
   },
