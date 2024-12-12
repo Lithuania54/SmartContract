@@ -53,4 +53,5 @@
 > Ši logika buvo įgyvendinta `PirminisVariantas` folderyje.
 
 ![Alt text](./public/lokalus_tinklas.gif)
+![Alt text](./public/testinis_tinklas.mp4)
 
