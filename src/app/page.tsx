@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 import { SubscriptionServiceContext } from '../../Context/SubscriptionService';
 import { useRouter } from 'next/navigation';
 
+
 const SubscriptionServicePage: React.FC = () => {
   const {
     currentAccount,
@@ -11,7 +12,7 @@ const SubscriptionServicePage: React.FC = () => {
     subscribe,
     purchaseComic,
     canAccessComic,
-    upgradeToPremium, // Ensure this is imported
+    upgradeToPremium,
     error,
   } = useContext(SubscriptionServiceContext) || {};
   
@@ -75,15 +76,14 @@ const SubscriptionServicePage: React.FC = () => {
     try {
       await purchaseComic(comic.id, comic.price);
       alert(`${comic.title} purchased successfully!`);
-  
-      // Triggering download after successful purchase
-      const comicPdfUrl = comic.pdf; // Assuming the URL is provided
+
+      const comicPdfUrl = comic.pdf;
       const a = document.createElement('a');
       a.href = comicPdfUrl;
-      a.download = `${comic.title}.pdf`; // Download the comic as a PDF
-      document.body.appendChild(a);  // Append anchor to the body
-      a.click();  // Trigger the click event
-      document.body.removeChild(a); // Clean up the DOM
+      a.download = `${comic.title}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     } catch (error) {
       alert(`Failed to purchase ${comic.title}. Please try again.`);
     }
@@ -100,11 +100,12 @@ const SubscriptionServicePage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-blue-900 via-purple-800 to-indigo-900 text-white">
-      <header className="bg-gray-900 p-5 shadow-lg">
+      <header className="bg-gray-900 p-3 shadow-lg">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold">ComicCom</h1>
           {currentAccount ? (
-            <p className="text-sm text-gray-300">Connected: {currentAccount}</p>
+            <p className="text-sm text-gray-300 p-0 m-0">Connected: {currentAccount}</p>
+
           ) : (
             <button
               onClick={connectWallet}
