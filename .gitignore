@@ -59,6 +59,8 @@ ignition/deployments/chain-31337
 
 node_modules
 .env
+*.pdf
+node_modules/
 
 # Hardhat files
 /cache
