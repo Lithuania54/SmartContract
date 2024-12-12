@@ -54,4 +54,4 @@
 
 ![Alt text](./public/lokalus_tinklas.gif)
 ![Alt text](./public/testinis_tinklas.mp4)
-
+https://github.com/user-attachments/assets/c6aa90fd-33e7-4cce-a191-c018291e2221
