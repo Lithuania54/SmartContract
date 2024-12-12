@@ -52,8 +52,6 @@
 > [!NOTE]  
 > Ši logika buvo įgyvendinta `PirminisVariantas` folderyje.
 
-![Alt text](./public/lokalus_tinklas.gif)
-![Alt text](./public/testinis_tinklas.mp4)
-
 [Watch the video](https://github.com/user-attachments/assets/c6aa90fd-33e7-4cce-a191-c018291e2221)
 
+[Watch the video](https://github.com/user-attachments/assets/cc64761e-f19e-4136-9b20-78dd492ff59c)
