@@ -49,7 +49,6 @@ contract SubscriptionService {
     require(sub.tier == 0, "Already on Premium or invalid tier");
     require(msg.value == (premiumFee - basicFee), "Incorrect fee sent for upgrade");
 
-    // Upgrade the subscription
     sub.tier = 1;
     sub.expirationDate = block.timestamp + subscriptionDuration;
 }
@@ -77,7 +76,6 @@ contract SubscriptionService {
 
     Subscription memory sub = subscriptions[user];
 
-    // Check if the comic was purchased
     if (purchasedComics[user][comicId]) {
         return true;
     }

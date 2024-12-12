@@ -103,7 +103,7 @@ Kodas yra padalintas į keletą pagrindinių dalių:
 2. **React Front-End** (`SubscriptionService.tsx`, `page.tsx`):
    - Leidžia vartotojams prisijungti prie savo Ethereum piniginės.
    - Pateikia UI prenumeratų pasirinkimams ir komiksų pirkimo galimybėms.
-   - Interfeysas, leidžiantis užsisakyti prenumeratą, atnaujinti ją, pirkti komiksus ir patikrinti prieigą.
+   - Interface, leidžiantis užsisakyti prenumeratą, atnaujinti ją, pirkti komiksus ir patikrinti prieigą.
 
 3. **Konstantos ir ABI** (`Constants.ts`):
    - Sukuriamas adresas ir ABI reikalingas išmaniosioms sutartims bendrauti su front-end aplikacija.
