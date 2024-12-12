@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Subscription Service</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Subscription Service</h1>
+        </header>
+
+        <main>
+            <section id="connect-wallet">
+                <button id="connectButton">Connect Wallet</button>
+                <p id="walletAddress">Not connected</p>
+            </section>
+
+            <section id="subscribe">
+                <h2>Subscribe</h2>
+                <form id="subscribeForm">
+                    <label for="tier">Select Tier:</label>
+                    <select id="tier">
+                        <option value="0">Basic</option>
+                        <option value="1">Premium</option>
+                    </select>
+                    <button type="submit">Subscribe</button>
+                </form>
+            </section>
+
+            <section id="subscription-details">
+                <h2>Your Subscription</h2>
+                <p id="subscriptionStatus">No subscription found</p>
+                <button id="renewButton">Renew Subscription</button>
+            </section>
+
+            <section id="owner-actions">
+                <h2>Admin</h2>
+                <button id="withdrawButton">Withdraw Funds</button>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const contractABI = [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "subscriber",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "timeRemaining",
+						"type": "uint256"
+					}
+				],
+				"name": "NearExpiration",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "subscriber",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "expiryTimestamp",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "enum SubscriptionService.Tier",
+						"name": "tier",
+						"type": "uint8"
+					}
+				],
+				"name": "SubscriptionRenewed",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "basicFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "basicInterval",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkNearExpiration",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkSubscription",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "earlyRenewalDiscount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "premiumFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "premiumInterval",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renewSubscription",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "enum SubscriptionService.Tier",
+						"name": "tier",
+						"type": "uint8"
+					}
+				],
+				"name": "subscribe",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "subscriberTier",
+				"outputs": [
+					{
+						"internalType": "enum SubscriptionService.Tier",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "subscriptionExpiry",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdrawFunds",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		];
+        const contractAddress = "0x0e4eE5F24E282aC49803F6771841B95e5B668BaA";
+
+        let web3;
+        let contract;
+        let userAccount;
+
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                await ethereum.request({ method: 'eth_requestAccounts' });
+                const accounts = await web3.eth.getAccounts();
+                userAccount = accounts[0];
+                document.getElementById('walletAddress').innerText = `Connected: ${userAccount}`;
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+            } else {
+                alert('Please install MetaMask!');
+            }
+        });
+
+        document.getElementById('subscribeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const tier = document.getElementById('tier').value;
+            const fee = tier === "0" ? web3.utils.toWei("0.00001", "ether") : web3.utils.toWei("0.00005", "ether");
+
+            try {
+                await contract.methods.subscribe(tier).send({ from: userAccount, value: fee });
+                alert('Subscription successful!');
+            } catch (error) {
+                console.error(error);
+                alert('Subscription failed.');
+            }
+        });
+
+        document.getElementById('renewButton').addEventListener('click', async () => {
+            try {
+                const fee = await contract.methods.getRenewalFee(userAccount).call();
+                await contract.methods.renewSubscription().send({ from: userAccount, value: fee });
+                alert('Renewal successful!');
+            } catch (error) {
+                console.error(error);
+                alert('Renewal failed.');
+            }
+        });
+
+        document.getElementById('withdrawButton').addEventListener('click', async () => {
+            try {
+                await contract.methods.withdrawFunds().send({ from: userAccount });
+                alert('Funds withdrawn successfully!');
+            } catch (error) {
+                console.error(error);
+                alert('Withdrawal failed.');
+            }
+        });
+    </script>
+</body>
+</html>

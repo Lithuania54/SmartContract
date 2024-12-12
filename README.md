@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Subscription-Service Išmanusis Kontraktas
 
-## Getting Started
+## Verslo logika
 
-First, run the development server:
+### Įvadas  
+`SubscriptionService` išmanioji sutartis sukurta tam, kad leistų vartotojams užsisakyti prenumeratos paslaugas Ethereum blokų grandinėje. Ji suteikia galimybę pasirinkti skirtingus prenumeratos planus (Bazinis arba Premium) ir siūlo papildomas funkcijas, tokias kaip ankstyvo atnaujinimo nuolaidos ir pranešimai apie artėjančią prenumeratos pabaigą.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Dalyviai ir jų vaidmenys  
+1. **Savininkas (owner):**  
+   - Valdo sutartį.
+   - Gali išsiimti sukauptas lėšas ir nustatyti prenumeratos mokesčius.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. **Prenumeratoriai (subscribers):**  
+   - Vartotojai, kurie užsisako prenumeratas.
+   - Gali atnaujinti prenumeratas ir gauti pranešimus apie galiojimo pabaigą.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Verslo logika ir funkcionalumas  
+1. **Prenumeratos planai:**  
+   - **Bazinis planas:**
+     - Mokestis: `0.01 ETH`
+     - Trukmė: `30 dienų`
+   - **Premium planas:**
+     - Mokestis: `0.05 ETH`
+     - Trukmė: `90 dienų`
+   
+2. **Ankstyvo atnaujinimo nuolaidos:**
+   - Jei vartotojas atnaujina prenumeratą dar prieš jos galiojimo pabaigą, taikoma `10%` nuolaida.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. **Pranešimai apie galiojimo pabaigą:**  
+   - Jei liko mažiau nei `3 dienos` iki prenumeratos pabaigos, išsiunčiamas pranešimo įvykis (`NearExpiration`).
 
-## Learn More
+4. **Mokėjimų ir prenumeratų valdymas:**  
+   - Prenumeratos mokestis turi būti lygus nurodytai sumai, kad sandoris būtų sėkmingas.
+   - Savininkas gali išsiimti visas sukauptas lėšas iš sutarties.
 
-To learn more about Next.js, take a look at the following resources:
+### Pagrindinės funkcijos
+1. **subscribe(Tier tier):**  
+   Leidžia vartotojui pasirinkti prenumeratos planą ir apmokėti už paslaugą. Atnaujina prenumeratos galiojimo laikotarpį.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+2. **renewSubscription():**  
+   Atnaujina vartotojo prenumeratą, taikant nuolaidą, jei ji atnaujinama dar prieš galiojimo pabaigą. Atnaujina galiojimo datą.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **checkSubscription():**  
+   Patikrina, ar prenumerata vis dar galioja, ir grąžina `true`, jei taip.
 
-## Deploy on Vercel
+4. **checkNearExpiration():**  
+   Jei prenumerata baigsis per artimiausias `3 dienas`, išsiunčia pranešimą apie artėjančią pabaigą (`NearExpiration`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+5. **withdrawFunds():**  
+   Leidžia sutarties savininkui išsiimti sutartyje sukauptas lėšas.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> [!NOTE]  
+> Ši logika buvo įgyvendinta `PirminisVariantas` folderyje.
+
